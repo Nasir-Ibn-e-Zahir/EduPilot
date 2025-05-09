@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -10,6 +11,9 @@ export default {
   ],
   theme: {
   	extend: {
+		backgroundImage:{
+			landing:"url('/NewProject.jpg')"
+		},
   		fontFamily: {
   			barlow: 'var(--font-barlow)'
   		},

@@ -47,7 +47,7 @@ export default function ImageUpload({ onImageUpload }: Props) {
         <CardHeader>
           <CardTitle className="text-2xl"> Image Upload Form </CardTitle>
           <CardDescription>
-            {" "}
+            
             Upload image and make your teaching smart!
           </CardDescription>
         </CardHeader>
