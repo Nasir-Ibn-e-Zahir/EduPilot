@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+ 
+}
+
+datasource db {s
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model random {
+  id     Int?
+  name   String? @db.VarChar(255)
+  rollno Int?
+
+  @@ignore
+}
+
+enum Role{
+  STUDENT
+  TEACHER
+  ADMIN
+}
+model User{
+  id String @unique @default(uuid())
+  name String
+  email String @unique
+  password String
+  role Role @default(STUDENT)
+  createdAt DateTime @default(now())
+}
