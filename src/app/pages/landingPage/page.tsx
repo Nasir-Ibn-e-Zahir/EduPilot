@@ -19,7 +19,7 @@ export default function Page() {
         <nav>
           <div className=" w-full h-[70px] flex bg-transparent justify-between p-3.5">
             <Image src={"/logo.png"} alt="Logo" width={60} height={60} />
-            <div className="w-[150px]  flex  justify-between">
+            <div className="w-[180px]  flex  justify-between">
               {session ? (
               <> <Button
                
@@ -68,7 +68,9 @@ export default function Page() {
 
           <br />
           <div className="grid grid-cols-2 md:pl-[250px] md:pr-[250px] w-full place-items-center ">
-            <Button variant={"default"} onClick={() => {}}>
+            <Button variant={"default"} onClick={() => {
+                      router.push("upload");
+                    }}>
               Try it now
             </Button>
             <Button variant={"secondary"}> Watch Demo</Button>
