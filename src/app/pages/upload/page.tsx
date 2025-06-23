@@ -9,20 +9,22 @@ import { ImageUploadSchema } from "@/lib/schemas";
 import { useMutation } from "@tanstack/react-query";
 // Zod
 import * as z from "zod";
-import Random from "../text/page";
+
 
 // useState
 import { useState } from "react";
 
 // use Session
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 
 
 export default function ImageUploadComponent() {
   const { data: session } = useSession();
   const [upimgMessage, setUploadMessage] = useState();
   const [showRandom, setShowRandom] = useState(false);
-  
+  const router = useRouter()
   
   const onImageUpload = async (data: z.infer<typeof ImageUploadSchema>) => {
     //  Creates a form data object similar to what HTML forms send.
@@ -54,15 +56,16 @@ export default function ImageUploadComponent() {
     mutationFn: onImageUpload,
     onSuccess: (data) => {
       setUploadMessage(data.text); // Show success message
+      console.log(upimgMessage)
       setShowRandom(true);
-      // // Optionally redirect:
-      // router.push("/pages/text"); // 👈 navigate after successful upload
+      // Optionally redirect:
+      router.push("/pages/submissions"); // 👈 navigate after successful upload
     },
   });
   
   return (
     <>
-      {showRandom && <Random text={upimgMessage} />}
+      {/* {showRandom && <Random text={upimgMessage} />} */}
       {!showRandom && <ImageUpload onImageUpload={mutation.mutate} />}
     </>
   );

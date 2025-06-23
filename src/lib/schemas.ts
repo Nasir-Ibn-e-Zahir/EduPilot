@@ -26,3 +26,10 @@ export const signinSchema = z
 //   .refine(data => data.email || data.name, {
 //     message: "Either name or email must be provided!",
 //     path: ["email"], // can be ["name"] or [] depending on where you want the error to show
+
+
+export const submissionSchema = z.object({
+  id: z.string().uuid(),
+  userid: z.string(),
+  files: z.array(z.string()), 
+})
