@@ -16,21 +16,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ImageUploadSchema } from "@/lib/schemas";
 //  shadcn-ui
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-
-// card shadcn-ui
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+import { Checkbox } from "../ui/checkbox";
 
 interface Props {
   onImageUpload: (image: z.infer<typeof ImageUploadSchema>) => void;
 }
+
+const TYPES = ["Quiz", "Assignments", "Midterm", "Finalterm", "Notes","Presentations"] as const;
 
 export default function ImageUpload({ onImageUpload }: Props) {
   //Form Data Validation
@@ -38,53 +30,81 @@ export default function ImageUpload({ onImageUpload }: Props) {
     resolver: zodResolver(ImageUploadSchema),
     defaultValues: {
       image: undefined,
+      options: [],
     },
   });
 
   return (
     <div className="h-screen w-full flex items-center justify-center">
-      <Card className="w-[350px] shadow text-center">
-        <CardHeader>
-          <CardTitle className="text-2xl"> Image Upload Form </CardTitle>
-          <CardDescription>
-             
-            Upload image and make your teaching smart!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...formData}>
-            <form
-              onSubmit={formData.handleSubmit(onImageUpload)}
-              className="space-y-4"
-            >
-              <FormField
-                control={formData.control}
-                name="image"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          field.onChange(file);
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <CardFooter className="flex w-[300px]">
-                <Button className="m-2 bg-green-600 hover:bg-green-700 flex-1">
-                  Upload
-                </Button>
-              </CardFooter>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+      <Form {...formData}>
+        <form
+          onSubmit={formData.handleSubmit(onImageUpload)}
+          className="space-y-4"
+        >
+          <FormField
+            control={formData.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      field.onChange(file);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={formData.control}
+            name="options"
+            render={() => (
+              <FormItem>
+                <div className="flex flex-row gap-2">
+                  {TYPES.map((type) => (
+                    <FormField
+                      key={type}
+                      control={formData.control}
+                      name="options"
+                      render={({ field }) => {
+                        return (
+                          <FormItem
+                            key={type}
+                            className="flex flex-row items-center "
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(type)}
+                                onCheckedChange={(checked) => {
+                                  const newValue = checked
+                                    ? [...field.value, type]
+                                    : field.value.filter(
+                                        (item) => item !== type
+                                      );
+
+                                  field.onChange(newValue);
+                                }}
+                              />
+                            </FormControl>
+                            <span className="capitalize">{type}</span>
+                          </FormItem>
+                        );
+                      }}
+                    />
+                  ))}
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <button>submit</button>
+        </form>
+      </Form>
     </div>
   );
 }

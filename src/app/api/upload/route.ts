@@ -17,17 +17,19 @@ export async function POST(req: NextRequest) {
   // Extracts the image file from the formData Object
   const file = formData.get("image") as File;
   const userid = formData.get("userid") as string;
-  // console.log(file)
-  console.log("------------> ",userid)
-  console.log(Object.keys(db));
+  
 
-  const submission = await db.submission.create({
+  
+
+
+  const submission = await db.presentation.create({
     data:{
-      userId: userid
+      userId: userid,
+      name: 'Quiz'
     }
   })
 
-  console.log("Submission id ---------------------------->",submission.id)
+  
   
 
   // Create new FormData to send to FastAPI
@@ -36,6 +38,24 @@ export async function POST(req: NextRequest) {
   fastApiFormData.append("userid", userid); // 'file' should match FastAPI param
   fastApiFormData.append("submissionId", submission.id); // 'file' should match FastAPI param
   
+  if(formData.get('Quiz')){
+    fastApiFormData.append('features','Quiz')
+  }      
+  if(formData.get('Assignments')){
+    fastApiFormData.append('features','Assignments')
+  }      
+  if(formData.get('Presentations')){
+    fastApiFormData.append('features','Presentations')
+  }      
+  if(formData.get('Midterm')){
+    fastApiFormData.append('features','Midterm')
+  }      
+  if(formData.get('Finalterm')){
+    fastApiFormData.append('features','Finalterm')
+  }      
+  if(formData.get('Notes')){
+    fastApiFormData.append('features','Notes')
+  }      
 
 
   const response = await fetch("http://localhost:5000/extract-text", {

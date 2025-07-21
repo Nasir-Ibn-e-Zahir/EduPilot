@@ -1,7 +1,9 @@
 'use client';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { Sidebar,SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../../../components/ui/sidebar'
+import { Sidebar,SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../../../components/ui/sidebar'
+import { Button } from '@/components/ui/button';
+
 
 type FileData = {
   submissionId: string;
@@ -40,7 +42,8 @@ export default function UserPDFList() {
       <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <Button className='bg-gray-700 ' >New Chat </Button>
+          <SidebarGroupLabel> Chats </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {data.map((submission) => (
@@ -48,7 +51,7 @@ export default function UserPDFList() {
                 
                 >
                   <SidebarMenuButton 
-                  className= {SelectedId == submission.submissionId? 'bg-amber-400':''}
+                  className= {SelectedId == submission.submissionId? 'bg-gray-300 hover:bg-gray-300 hover:cursor-pointer':'hover:bg-gray-300 hover:cursor-pointer'}
                   asChild>
                     <a  onClick={()=>handleSubmissionClick(submission.submissionId)}>
                       <span>{submission.submissionId}</span>
@@ -60,8 +63,15 @@ export default function UserPDFList() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className='bg-gray-200' >
+        {session?.user.name}
+        
+      </SidebarFooter>
     </Sidebar>
     <div >
+      <nav>
+
+      </nav>
       <h1> PDF Files of {SelectedId} {
             
           <ul className="list-decimal list-inside mt-2 ">

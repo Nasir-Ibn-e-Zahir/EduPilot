@@ -1,6 +1,8 @@
 import * as z from 'zod'
 export const ImageUploadSchema = z.object({
-    image: z.instanceof(File) .refine((file) => file instanceof File, 'Please upload a valid file') 
+    image: z.instanceof(File) .refine((file) => file instanceof File, 'Please upload a valid file'),
+    options: z.array(z.enum(["Quiz", "Assignments", "Midterm", "Finalterm", "Notes","Presentations"]))
+    .min(1,"Select at least one option!")
 })
 
 export const signupSchema = z.object({

@@ -24,14 +24,63 @@ model User {
   password    String
   role        Role         @default(STUDENT)
   createdAt   DateTime     @default(now())
-  submissions Submission[]
+  notes         Note[]
+  quizzes       Quiz[]
+  assignments   Assignment[]
+  presentations Presentation[]
+  midpapers     Midpaper[]
+  finalpapers   Finalpaper[]
 }
 
-model Submission {
+model Note{
   id        String   @id @default(uuid())
   userId    String
+  name      String
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
+}
+
+model Quiz{
+  id      String @id @default (uuid())
+  userId  String
+  name    String
+  user    User    @relation(fields: [userId],references: [id])
+  level   Levels  @default(EASY)
+  createdAt DateTime  @default(now())
+}
+model Assignment{
+  id      String @id @default (uuid())
+  userId  String
+  name    String
+  user    User    @relation(fields: [userId],references: [id])
+  createdAt DateTime  @default(now())
+}
+model Midpaper{
+  id      String @id @default (uuid())
+  userId  String
+  name    String
+  user    User    @relation(fields: [userId],references: [id])
+  createdAt DateTime  @default(now())
+}
+model Finalpaper{
+  id      String @id @default (uuid())
+  userId  String
+  name    String
+  user    User    @relation(fields: [userId],references: [id])
+  createdAt DateTime  @default(now())
+}
+model Presentation{
+  id      String @id @default (uuid())
+  userId  String
+  name    String
+  user    User    @relation(fields: [userId],references: [id])
+  createdAt DateTime  @default(now())
+}
+
+enum Levels{
+  EASY
+  MEDIUM
+  DIFFICULT
 }
 
 enum Role {

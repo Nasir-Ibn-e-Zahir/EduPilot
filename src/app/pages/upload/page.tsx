@@ -31,13 +31,20 @@ export default function ImageUploadComponent() {
     //  Automatically sets the correct Content-Type to multipart/form-data.
     //  Without FormData, you can't send file data using fetch().
     const formdata = new FormData();
+    
     const userid = session?.user.id ?? "";
     //  Adds a new field to the FormData.
     formdata.append("image", data.image);
     formdata.append("userid", userid);
     
-     
-    console.log(session?.user.id)
+    data.options.forEach((option)=>{
+      formdata.append(option,option)
+      
+    })
+    
+
+    
+
 
     const response = await fetch("/api/upload", {
       method: "POST",
