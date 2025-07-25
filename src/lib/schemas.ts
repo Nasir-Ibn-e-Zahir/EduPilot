@@ -1,9 +1,46 @@
 import * as z from 'zod'
+
+
 export const ImageUploadSchema = z.object({
-    image: z.instanceof(File) .refine((file) => file instanceof File, 'Please upload a valid file'),
-    options: z.array(z.enum(["Quiz", "Assignments", "Midterm", "Finalterm", "Notes","Presentations"]))
-    .min(1,"Select at least one option!")
-})
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size > 0, {
+      message: "Please upload an image",
+    }),
+  options: z.array(
+    z.enum([
+      "Quiz",
+      "Assignments",
+      "Midterm",
+      "Finalterm",
+      "Notes",
+      "Presentations",
+    ])
+  ),
+  assignmentCount: z.number().min(1).optional(),
+  presentationCount: z.number().min(1).optional(),
+
+  // Quiz fields
+  quizDifficulty: z.enum(["easy", "medium", "hard"]).optional(),
+  mcqsCount: z.number().min(0).optional(),
+  trueFalseCount: z.number().min(0).optional(),
+  shortQCount: z.number().min(0).optional(),
+  longQCount: z.number().min(0).optional(),
+
+   // Midterm fields
+  midMcqsCount: z.number().min(0).optional(),
+  midTrueFalseCount: z.number().min(0).optional(),
+  midShortQCount: z.number().min(0).optional(),
+  midLongQCount: z.number().min(0).optional(),
+
+  // Finalterm fields
+  finalMcqsCount: z.number().min(0).optional(),
+  finalTrueFalseCount: z.number().min(0).optional(),
+  finalShortQCount: z.number().min(0).optional(),
+  finalLongQCount: z.number().min(0).optional(),
+});
+
+
 
 export const signupSchema = z.object({
     name: z.string().min(4,"Name should be at least 4 chracters long!")

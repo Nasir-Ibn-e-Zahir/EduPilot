@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { Sidebar,SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../../../components/ui/sidebar'
 import { Button } from '@/components/ui/button';
+import ImageUploadComponent from '../upload/page';
 
 
 type FileData = {
@@ -72,7 +73,7 @@ export default function UserPDFList() {
       <nav>
 
       </nav>
-      <h1> PDF Files of {SelectedId} {
+      {SelectedId? <h1> PDF Files of {SelectedId} {
             
           <ul className="list-decimal list-inside mt-2 ">
             {filterData?.files.map((fileUrl) => (
@@ -85,7 +86,8 @@ export default function UserPDFList() {
             
           </ul> 
 
-        }</h1>
+        }</h1>:<ImageUploadComponent/>}
+     
     </div>
       {/* {data.map((submission) => (
         <div key={submission.submissionId} className="mt-4 border p-4 rounded shadow">
