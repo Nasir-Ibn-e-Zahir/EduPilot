@@ -26,6 +26,10 @@ export default function UserPDFList() {
     setFilterData(matched || undefined);
   };
 
+  const handleNewChatButton =() => {
+         setSelectedId("")
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch(`/api/user-submissions?userId=${userId}`);
@@ -43,7 +47,7 @@ export default function UserPDFList() {
       <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <Button className='bg-gray-700 ' >New Chat </Button>
+          <Button className='bg-gray-700 ' onClick={handleNewChatButton} >New Chat </Button>
           <SidebarGroupLabel> Chats </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -70,9 +74,7 @@ export default function UserPDFList() {
       </SidebarFooter>
     </Sidebar>
     <div >
-      <nav>
-
-      </nav>
+      
       {SelectedId? <h1> PDF Files of {SelectedId} {
             
           <ul className="list-decimal list-inside mt-2 ">
@@ -86,25 +88,15 @@ export default function UserPDFList() {
             
           </ul> 
 
-        }</h1>:<ImageUploadComponent/>}
+        }</h1>: <div className="flex flex-col h-full w-[910px] items-center justify-between text-center " >
+          <div className='' >
+            <h1>What can i help?</h1>
+          </div>
+          <ImageUploadComponent  />
+        </div> }
      
     </div>
-      {/* {data.map((submission) => (
-        <div key={submission.submissionId} className="mt-4 border p-4 rounded shadow">
-          <h3 className="font-semibold"
-          onClick={()=>{console.log(submission.submissionId)}}
-          >Submission: {submission.submissionId}</h3> */}
-          {/* <ul className="list-disc list-inside mt-2">
-            {submission.files.map((fileUrl) => (
-              <li key={fileUrl}>
-                <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  {fileUrl.split('/').pop()}
-                </a>
-              </li>
-            ))}
-          </ul> */}
-        {/* </div> */}
-      {/* ))} */}
+     
     </div>
   );
 }

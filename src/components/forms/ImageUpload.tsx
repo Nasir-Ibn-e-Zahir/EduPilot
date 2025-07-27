@@ -27,6 +27,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
+
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 interface Props {
@@ -55,7 +56,7 @@ const TYPES = [
   "Notes",
   "Presentations",
 ] as const;
-const ALL_TYPES = [...TYPES];
+
 
 export default function ImageUpload({ onImageUpload }: Props) {
   //Form Data Validation
@@ -144,7 +145,7 @@ export default function ImageUpload({ onImageUpload }: Props) {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <div className="relative w-[50px] h-[50px]">
+                  <div className="relative w-[35px] h-[35px]">
                     <Input
                       id="file-upload"
                       type="file"
@@ -157,9 +158,9 @@ export default function ImageUpload({ onImageUpload }: Props) {
                     />
                     <label
                       htmlFor="file-upload"
-                      className="absolute inset-0 flex items-center justify-center rounded-full bg-muted hover:bg-muted/80 cursor-pointer border"
+                      className="absolute inset-0 flex items-center justify-center bg-gray-900 rounded-full   cursor-pointer border  p-2  hover:cursor-pointer w-[35px] h-[35px]"
                     >
-                      <PaperclipIcon className="w-6 h-6 text-muted-foreground" />
+                      <PaperclipIcon className="w-5 h-5 bg-gray-900 text-white" />
                     </label>
                   </div>
                 </FormControl>
@@ -175,40 +176,12 @@ export default function ImageUpload({ onImageUpload }: Props) {
             render={() => (
               <FormItem>
                 <div className="flex flex-wrap gap-4 items-center">
-                  {/* Select All */}
-                  <FormItem className="flex items-center space-x-2">
-                    <FormControl>
-                      <Checkbox
-                        checked={
-                          formData.watch("options").length === ALL_TYPES.length
-                        }
-                        className="border-2 border-gray-300"
-                        onCheckedChange={(checked) => {
-                          const newValue = checked ? ALL_TYPES : [];
-                          formData.setValue("options", newValue);
-                        }}
-                      />
-                    </FormControl>
-                    <span>Select All</span>
-                  </FormItem>
-
-                  {/* Deselect All */}
-                  <FormItem className="flex items-center space-x-2">
-                    <FormControl>
-                      <Checkbox
-                        checked={formData.watch("options").length === 0}
-                        onCheckedChange={() => {
-                          formData.setValue("options", []);
-                        }}
-                      />
-                    </FormControl>
-                    <span>Deselect All</span>
-                  </FormItem>
                   {TYPES.map((type) => (
                     <FormField
                       key={type}
                       control={formData.control}
                       name="options"
+                  
                       render={({ field }) => (
                         <FormItem className="flex items-center space-x-2">
                           <FormControl>
@@ -255,8 +228,8 @@ export default function ImageUpload({ onImageUpload }: Props) {
           />
 
           {/* Submit Button */}
-          <Button type="submit" className="rounded-full p-3">
-            <SendIcon className="w-5 h-5" />
+          <Button type="submit" className="rounded-full p-2 hover:bg-gray-800 hover:cursor-pointer w-[35px] h-[35px]">
+            <SendIcon className="w-5 h-5 " />
           </Button>
         </form>
       </Form>
