@@ -186,6 +186,7 @@ export default function ImageUpload({ onImageUpload }: Props) {
                         <FormItem className="flex items-center space-x-2">
                           <FormControl>
                             <Checkbox
+                            className="border-2 border-gray-400"
                               checked={field.value?.includes(type)}
                               onCheckedChange={(checked) => {
                                 const newValue = checked
