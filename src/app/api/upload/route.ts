@@ -73,6 +73,12 @@ export async function POST(req: NextRequest) {
 
   const data = await response.json();
   console.log(data);
-
+  
+  await db.submission.update({
+    where:{id:submission.id},
+    data:{
+      name:data.response
+    }
+  })
   return NextResponse.json(["Message compiled successfully!"]);
 }

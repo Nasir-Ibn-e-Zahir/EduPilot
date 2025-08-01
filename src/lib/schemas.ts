@@ -69,6 +69,7 @@ export const signinSchema = z
 
 export const submissionSchema = z.object({
   id: z.string().uuid(),
+  submissionName: z.string(),
   userid: z.string(),
   files: z.array(z.string()), 
 })

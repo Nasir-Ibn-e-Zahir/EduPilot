@@ -11,18 +11,30 @@ export async function GET(req: Request) {
 
   const submissions = await db.submission.findMany({
     where: { userId },
-    select: { id: true },
+    
   });
 
-  const submissionIds = submissions.map((s) => s.id);
+  const submissionIds = submissions.map((s) =>{
+    return {id:s.id,name:s.name}
+  });
 
+  
+  
   // Now send these to FastAPI
   const fastApiRes = await fetch('http://localhost:8000/get-user-files', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ submissionIds }),
+    
   });
 
   const result = await fastApiRes.json();
+
+//  result.forEach(element => {
+//     console.log(element.submissionId)
+//   });
+  console.log("Result------>",result)
+
+
   return Response.json(result);
 }
