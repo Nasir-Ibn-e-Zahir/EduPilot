@@ -6,7 +6,8 @@ export const ImageUploadSchema = z.object({
     .instanceof(File)
     .refine((file) => file.size > 0, {
       message: "Please upload an image",
-    }),
+    }).optional(),
+    prompt: z.string().optional(),
   options: z.array(
     z.enum([
       "Quiz",
@@ -38,7 +39,32 @@ export const ImageUploadSchema = z.object({
   finalTrueFalseCount: z.number().min(0).optional(),
   finalShortQCount: z.number().min(0).optional(),
   finalLongQCount: z.number().min(0).optional(),
-});
+
+  
+})
+ .refine(
+    (data) => {
+      const hasPrompt = !!data.prompt?.trim();
+      const hasImage = data.image instanceof File;
+      return !(hasPrompt && hasImage); // false if both present
+    },
+    {
+      message: "Please provide either a prompt or an image — not both.",
+      path: ["prompt"], // Attach the error to the prompt field
+    }
+  )
+  .refine(
+    (data) => {
+      const hasPrompt = !!data.prompt?.trim();
+      const hasImage = data.image instanceof File;
+      return hasPrompt || hasImage; // true if at least one is present
+    },
+    {
+      message: "Either a prompt or an image is required.",
+      path: ["prompt"], // Attach the error to the prompt field
+    }
+  );
+
 
 
 

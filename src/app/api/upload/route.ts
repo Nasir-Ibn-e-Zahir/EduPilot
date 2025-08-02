@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
   // Extracts the image file from the formData Object
   const file = formData.get("image") as File;
   const userid = formData.get("userid") as string;
+  const prompt = formData.get('prompt') as string
 
   const submission = await db.submission.create({
     data: {
@@ -21,12 +22,13 @@ export async function POST(req: NextRequest) {
       name: "submission",
     },
   });
-
+ console.log("Prompt--------------->",prompt)
   // Create new FormData to send to FastAPI
   const fastApiFormData = new FormData();
   fastApiFormData.append("file", file); // 'file' should match FastAPI param
   fastApiFormData.append("userid", userid); // 'file' should match FastAPI param
   fastApiFormData.append("submissionId", submission.id); // 'file' should match FastAPI param
+  fastApiFormData.append("prompt",prompt)
 
   if (formData.get("Quiz")) {
     fastApiFormData.append("features", "Quiz");
@@ -73,7 +75,7 @@ export async function POST(req: NextRequest) {
 
   const data = await response.json();
   console.log(data);
-  
+
   await db.submission.update({
     where:{id:submission.id},
     data:{

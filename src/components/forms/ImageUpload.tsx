@@ -60,10 +60,12 @@ const TYPES = [
 
 export default function ImageUpload({ onImageUpload }: Props) {
   //Form Data Validation
+  
   const formData = useForm<z.infer<typeof ImageUploadSchema>>({
     resolver: zodResolver(ImageUploadSchema),
     defaultValues: {
       image: undefined,
+      prompt: "",
       options: [],
       assignmentCount: undefined,
       presentationCount: undefined,
@@ -131,14 +133,39 @@ export default function ImageUpload({ onImageUpload }: Props) {
     setOpenDialog(null);
   };
 
+ 
+
   return (
-    <div>
+    <div  className="bg-gray-400  w-[800px] p-2 rounded-2xl absolute bottom-3 left-70" >
       <Form {...formData}>
         <form
           onSubmit={formData.handleSubmit(onImageUpload)}
           className="flex items-center justify-center gap-6 flex-wrap"
         >
           {/* Upload Button */}
+          <div className="flex flex-col w-full" >
+            <div >
+             {/* Prompt Input */}
+         <FormField
+  control={formData.control}
+  name="prompt"
+  render={({ field }) => (
+    <FormItem className="flex-1 px-2">
+      <FormControl>
+        <Input
+          {...field} // only safe props like onChange, name, value
+           value={field.value ?? ""} 
+          type="text"
+          className="appearance-none border-none outline-none bg-transparent p-0 m-0 shadow-none focus:outline-none"
+        />
+      </FormControl>
+      
+    </FormItem>
+  )}
+/>
+          </div>
+          
+            <div  className="flex flex-row justify-between" >
           <FormField
             control={formData.control}
             name="image"
@@ -154,6 +181,7 @@ export default function ImageUpload({ onImageUpload }: Props) {
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         field.onChange(file);
+                        
                       }}
                     />
                     <label
@@ -169,6 +197,10 @@ export default function ImageUpload({ onImageUpload }: Props) {
             )}
           />
 
+         
+
+        
+           
           {/* Checkboxes */}
           <FormField
             control={formData.control}
@@ -186,7 +218,7 @@ export default function ImageUpload({ onImageUpload }: Props) {
                         <FormItem className="flex items-center space-x-2">
                           <FormControl>
                             <Checkbox
-                            className="border-2 border-gray-400"
+                            className="border-2 border-gray-100"
                               checked={field.value?.includes(type)}
                               onCheckedChange={(checked) => {
                                 const newValue = checked
@@ -228,10 +260,14 @@ export default function ImageUpload({ onImageUpload }: Props) {
             )}
           />
 
-          {/* Submit Button */}
+            {/* Submit Button */}
           <Button type="submit" className="rounded-full p-2 hover:bg-gray-800 hover:cursor-pointer w-[35px] h-[35px]">
             <SendIcon className="w-5 h-5 " />
           </Button>
+          </div>
+
+          
+          </div>
         </form>
       </Form>
       <Dialog

@@ -8,13 +8,14 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../../../components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import ImageUploadComponent from "../upload/page";
-import { Download} from "lucide-react";
+import {   Download, NotebookPenIcon, SidebarCloseIcon, SidebarOpenIcon} from "lucide-react";
 
 import { DeleteDialog } from "@/components/shared/Delete";
 
@@ -32,6 +33,7 @@ export default function UserPDFList() {
   const [SelectedId, setSelectedId] = useState<string>();
   const [subName, setSubName] = useState<string>();
   const [showNavbar, setShowNavbar] = useState(false);
+  const [showSidebar,setShowSidebar] = useState(true)
 
   const handleSubmissionClick = (submissionId: string) => {
     setSelectedId(submissionId);
@@ -39,7 +41,7 @@ export default function UserPDFList() {
     setShowNavbar(true);
     const matched = data.find((item) => item.submissionId === submissionId);
     setFilterData(matched || undefined);
-  };
+  };    
 
  const handleDelete = async (id: string) => {
   try {
@@ -56,7 +58,12 @@ export default function UserPDFList() {
 
   const handleNewChatButton = () => {
     setSelectedId("");
+    setShowNavbar(false)
   };
+
+  const handleSidebarToggle = () => {
+    setShowSidebar(prev=>!prev)
+  }
 
  
   useEffect(() => {
@@ -79,13 +86,26 @@ export default function UserPDFList() {
   }, [data]);
 
   return (
-    <div className="flex flex-row w-screen">
-      <Sidebar>
+    <div className={`flex flex-row w-screen transition-all duration-300 ${showSidebar ? 'w-[300px]' : 'w-0 overflow-hidden'}`}>
+      {showSidebar? <Sidebar className="h-screen transition-all duration-300">
         <SidebarContent>
+          <SidebarHeader>
+            <div className="flex flex-row justify-between" >
+              <Button  className="bg-transparent text-black hover:text-white">Logo</Button>
+              
+              <Button className="bg-transparent text-black hover:text-white"
+              onClick={handleSidebarToggle}
+              >
+                <SidebarCloseIcon/>
+              </Button>
+            </div>
+          </SidebarHeader>
           <SidebarGroup>
-            <Button className="bg-gray-700 " onClick={handleNewChatButton}>
-              New Chat
-            </Button>
+            <div  onClick={handleNewChatButton} className="flex flex-row bg-"  >
+                <Button className="flex-1 text-left">
+                  <NotebookPenIcon/>  New Chat
+                </Button>
+            </div>
             <SidebarGroupLabel> Chats </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
@@ -121,10 +141,26 @@ export default function UserPDFList() {
         <SidebarFooter className="bg-gray-200">
           {session?.user.name}
         </SidebarFooter>
+      </Sidebar>: 
+//         <Button onClick={handleSidebarToggle} className="z-50 absolute top-1 left-1 ">
+//   <SidebarOpenIcon />
+// </Button>
+<div className={`transition-all duration-300 ${
+    showSidebar ? 'w-64' : 'w-0'
+  } overflow-hidden`} >
+      <Sidebar  className="w-[50px]" >
+        <SidebarContent>
+          <Button onClick={handleSidebarToggle} className="z-50 absolute top-1 left-1 ">
+          <SidebarOpenIcon />
+          </Button>
+        </SidebarContent>
       </Sidebar>
-      <div className="w-full flex-1">
+      </div>
+      }
+     
+      <div className={`flex-1 ${showSidebar? 'w-[800px]':'flex-1' } `} >
         {showNavbar ? (
-          <nav className="w-full h-[50px] bg-gray-700 text-white p-2 flex flex-row justify-between ">
+          <nav className="w-full h-[50px] bg-gray-700 text-white  p-2 text-center ">
             {subName}
             {/*         
              <Button onClick={handleDownloadAll}  variant={'outline'}  className="flex gap-2 items-center hover:cursor-pointer" >
@@ -135,8 +171,8 @@ export default function UserPDFList() {
         ) : null}
 
         {SelectedId ? (
-          <div className="space-y-4 mt-4 p-4">
-            <ul className="list-decimal list-inside space-y-2">
+          <div className="flex flex-col justify-center items-center p-4">
+            <ul className="list-decimal list-inside space-y-2 w-[1000px] ">
               {filterData?.files.map((fileUrl: string) => {
                 const fileName = fileUrl.split("/").pop();
                 return (

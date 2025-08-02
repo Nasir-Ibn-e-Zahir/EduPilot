@@ -176,9 +176,16 @@ export default function ImageUploadComponent() {
   const onImageUpload = async (data: z.infer<typeof ImageUploadSchema>) => {
     const formdata = new FormData();
     const userid = session?.user.id ?? "";
-    
-    formdata.append("image", data.image);
+    if(data.image && data.prompt){
+      console.log("Both Image and Prompt not allowed! ")
+    }
+    if (data.image) {
+      formdata.append("image", data.image);
+    }
     formdata.append("userid", userid);
+    if (data.prompt !== undefined) {
+      formdata.append("prompt", data.prompt);
+    }
     // Map 'options' to 'features' for FastAPI
     data.options.forEach((option) => formdata.append("features", option));
 
